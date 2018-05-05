@@ -19,7 +19,9 @@ b. Lolin32 Lite
 
 ### Sensor PIN layout (backside)
 1 GND
+
 2 DATA
+
 3 VCC
 
 ### Sensor wiring up
@@ -50,7 +52,6 @@ b. Lolin32 Lite
 - Jumper in the "H" position => uses a repeatable trigger.    "H" position: connect the two pins that are the furthest away from the corner the board.
 - Jumper in the "L" position => uses a normal single trigger. "L" position: connect the two pins that are the closest to the corner of the board.
 
-
 ## Sensor FAQ
 - OK 3.3V
 - The sensor is powered up and ready after 60 seconds. The sensor might output HIGH several times during that period. There should be as little motion as possible in the sensor's field of view during that period.
@@ -70,3 +71,4 @@ b. Lolin32 Lite
 - @important No extra pullup resistor needed on the DATA PIN because I have enabled the ESP32 internal pullup resistor for the data pin in the software.
 
 ## Sensor known ISSUES
+*NONE
