@@ -29,7 +29,7 @@ So I developed over time these extra components, including many working projects
 And I thought now was a good time to release everything I learned so far to the ESP32 community so everyone can benefit from this work.
 
 ## What is in the Starter Kit?
-### Working projects.
+### Working Projects.
 Firstly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself).
 
 These projects:
@@ -63,13 +63,15 @@ Let's highlight a few projects that document how to use the extra components of 
 - KY-032 infrared obstacle avoidance sensor.
 - ZS-042 DS1302 RTC realtime clock.
 
-### Components
-Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32. So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project.
+### Extra ESP-IDF Components
+Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32.
 
-The libraries can roughly be divived in 3 groups:
-1. Related to programmming in the C language which has its own quirks, as any programming language does.
-2. Related to the ESP32 environment and the specifics of embedded systems.  Some examples: an easy Wifi component, the SPIFFS file system.
-3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: temperature sensors, RTC clocks, PIR and obstacle sensors.
+So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project.
+
+The libraries can roughly be divided in 3 groups:
+1. Related to programmming in the C language (which has its own quirks as all other programming languages). Example: linked lists.
+2. Related to the ESP32 environment and the specifics of embedded systems. Some examples: an easy Wifi component, the SPIFFS file system. They make those ESP-IDF features much easier to use.
+3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: temperature sensors, GPS boards, RTC clocks, PIR sensors, and obstacle sensors. The component abstracts the complexity of the sensor, and make it much easier to use.
 
 Let's highlight a few.
  
