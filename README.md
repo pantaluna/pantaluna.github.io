@@ -1,6 +1,6 @@
 # ESP32 Starter Kit MJD
 ## Introduction
-Do you also want to create innovative IoT projects that use the ESP32 chip of Espressif? Well, I did and still do and I hope you do too.
+Do you also want to create innovative IoT projects that use the ESP32 chip, or ESP32-based modules, of Espressif? Well, I did and still do and I hope you do too.
 
 The objective of this Starter Kit is to accelerate the development of your IoT projects for ESP32 using ESP-IDF.
 
@@ -20,11 +20,11 @@ After experimenting with both frameworks I decided to go with the ESP-IDF framew
 ## Why would you need this starter kit?
 The ESP-IDF framework (and its documentation) is very powerful and extensive.
 
-But I found it difficult to get started quickly, for me being a seasoned full stack developer (backend/frontend) without much experience developing IoT solutions that use embedded systems as well. PS So being a Full Stack Developer doesn;t mean you know everything there is, right?
+But I found it difficult to get started quickly, for me being a seasoned full stack developer (backend/frontend) without much experience developing IoT solutions that use embedded systems as well. PS So being a Full Stack Developer doesn't mean you know everything there is, right?
 
 More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and develop real projects for real solutions. For example, I wanted to start with projects controlling various sensors in a network, and then move on to more complex projects.
 
-So I developed over time these extra components, including many working projects targeting a complete set of peripherals that are typically used in IoT projects.
+So I developed over time these extra components, including many working projects targeting a complete set of peripherals/sensors that are typically used in IoT projects.
 
 And I thought now was a good time to release everything I learned so far to the ESP32 community so everyone can benefit from this work.
 
@@ -68,8 +68,8 @@ Secondly, I noticed that many coding patterns came back again and again in the f
 
 The libraries can roughly be divived in 3 groups:
 1. Related to programmming in the C language which has its own quirks, as any programming language does.
-2. Related to the ESP32 environment and the specifics of embedded systems.
-3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: temperature sensors, RTC clocks, PIR and obstacle sensors, file systems.
+2. Related to the ESP32 environment and the specifics of embedded systems.  Some examples: an easy Wifi component, the SPIFFS file system.
+3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: temperature sensors, RTC clocks, PIR and obstacle sensors.
 
 Let's highlight a few.
  
@@ -116,12 +116,15 @@ Run it and study the source code.
 
 ## What are the requirements of the ESP32 Starter Kit
 1. A working ESP-IDF installation (http://esp-idf.readthedocs.io/en/latest/get-started/index.html)
-2. Clone the Github repository.
+2. Clone this Github repository.
 3. `cd` into the directory of the project you want to explore.
+4. Read the instructions in the README of the project, and the README of all the components that are injected in this project.
 4. Run `make flash monitor` to build and upload the example to your dev board and connect to it's serial terminal.
 
 ## FAQ
-- The Starter Kit gets you started quickly. If you need extra features then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. The Starter Kit is not designed to implement all conceivable features of any project.
+- The ESp32 Starter Kit gets you started quickly. If you need extra features that seem a good fit for the Startet Kit then please submit an issue. If the feature is very specific to your projet then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. The Starter Kit is not designed to implement all conceivable features of any project.
 
-## Known ISSUES
+## Known Issues
 
+## What Is Next
+Please share your experiences using this ESP32 Starter Kit with the ESP32 community.
