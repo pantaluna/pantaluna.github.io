@@ -1,74 +1,119 @@
-# ESP-IDF MJD HC-SR501 PIR motion sensor component
-This is component based on ESP-IDF for ESP32.
+# ESP32 Starter Kit MJD
+## Introduction
+Do you also want to create innovative IoT projects that use the ESP32 chip of Espressif? Well, I did and still do and I hope you do too.
 
-## Shop Product.
-HC-SR501 PIR Human Infrared Sensor Module Including Lens
+The objective of this Starter Kit is to accelerate the development of your IoT projects for ESP32 using ESP-IDF.
 
-## Data Sheet
-(https://www.mpja.com/download/31227sc.pdf)
+Are you ready to discover how you can get started quickly.
 
-## WIRING INSTRUCTIONS
-### MCU
-a. Adafruit HUZZAH32
-- UART Serial COM3
-- Pin #13 = Blue LED on the PCB
+## Why chosing the ESP-IDF framework?
+You have 2 options to start developing for the ESP32 chip:
+1. Use "ESP-IDF", the extensible official Espressif IoT Development Framework of Espressif. This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
+2. Use the official "Arduino Core For ESP32" framework of Espressif. This is a hardware abstraction layer for Arduino IDE so you can target the ESP32 chip. The big advantage is that you can empower your existing knowledge of the Arduino IDE. The downside is that it is not that feature-rich compared to ESP-IDF. And the development pace is slower and not all features of ESP-IDF have been ported to Arduino.
 
-b. Lolin32 Lite
-- UART Serial COM5
-- Pin #22 = Blue LED on the PCB
+It is important to know that both frameworks are stable and usable but they are still under significant development by Espressif, and major new releases are coming out on a regularly basis; I expect this to continue at least until 2018Q4.
 
-### Sensor PIN layout (backside)
-1 GND
+After experimenting with both frameworks I decided to go with the ESP-IDF framework, more specifically V3.0 and higher. I always try to release libraries that are compatible with the last major release and eventually the master branch.
 
-2 DATA
+## Why do I need a starter kit?
+Although the ESP-IDF framework (and its documentation) is very powerful and extensive, I found it difficult to get started quickly. The extensive framework is nice but I found it hard to get started creating real projects for real solutions. I wanted to start with controlling various sensors in anetwork, and then move on to more complex projects.
 
-3 VCC
+So this is why I have released this ESP32 Starter Kit.
 
-### Sensor wiring up
-- Connect device pin VCC to the MCU pin VCC 3V.
-- Connect device pin GND to the MCU pin GND.
-- Connect device pin DATA/OUT to a MCU GPIO#14 (Huzzah32 #14 bottomright-2)(Lolin32lite #19 topright+2)
+## What is in the Starter Kit?
+### Working projects.
+Firstly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself).
 
-## Sensor Voltage Levels
-- Operating Voltage: the spec says DC 4.5V-20V but the board also works with DC 3.3V (OK for ESP32 boards).
-- Voltage level on the DATA PIN: DC 3.3V (OK for ESP32 boards).
+These projects:
+- Give insights in how to actually use the official ESP-IDF framework efficiently.
+- Include a ton of best coding practices and best configuration practices.
+- Demonstrate how to use the new ESP-IDF components of this Starter Kit, such as meteo sensors (see next section).
 
-## Time Decay potentiometer
-- Dial the pot (the left one) to fully-left which is its minimum time decay.
-- Recommended setting: minimum 3 seconds.
-- Defines how long the signal stays ON (and blocks further detections) after it detects a movement. Minimum = 3 seconds. Maximum = 300 seconds.
+Let's highlight a few projects that document how to use the core ESP-IDF framework.
+- Battery wearer.
+- Button basics.
+- GPIO basics.
+- GPIO scanner.
+- I2C scanner.
+- LEDC basics.
+- SPIFFS basics.
+- Timer basics.
+- UART basics.
+- Wifi device scanner.
+- Wifi SSID cloner.
+- Wifi SSID scanner.
+- Wifi SSID spammer.
 
-## DISTANCE SENSITIVITY potentiometer
-- Dial the pot (the right one) to fully-left for its maximum range.
-- Recommended setting: Minimum=3 meters.
-- Implies how far the sensor works. Minimum=3 meters. Maximum=8 meters.
-    + Clockwise         = Increase sensitivity. Fully right: the range is max 7 meter.
-    + 	Counter-Clockwise = Decrease sensitivity. Fully left: the range is max 3 meter.
+Let's highlight a few projects that document how to use the extra components of the Starter Kit.
+- MJD Components (this projects demonstrates all non-peripheral components such as linked lists, ESP chip interfaces, Wifi, networking, MQTT, ...).
+- AM2320 meteo sensor.
+- BH1750 light intensity sensor.
+- BME280 meteo sensor.
+- BMP280 meteo sensor.
+- DHT11 temperature sensor.
+- HC-SR501 PIR human infrared sensor
+- KY-032 infrared obstacle avoidance sensor.
+- ZS-042 DS1302 RTC realtime clock.
 
-## Jumper "TRIGGER MODE"
-- Recommended to use the Single trigger mode ("L").
-- Repeatable trigger mode ("H"): output remains HIGH when sensor is retriggered repeatedly during the TIME DECAY period. Output is LOW when idle.
-- Single trigger mode ("L"): output goes HIGH then LOW when triggered during the TIME DECAY period. Continuous motion results in repeated HIGH/LOW pulses. Output is LOW when idle.
-- Jumper in the "H" position => uses a repeatable trigger.    "H" position: connect the two pins that are the furthest away from the corner the board.
-- Jumper in the "L" position => uses a normal single trigger. "L" position: connect the two pins that are the closest to the corner of the board.
+### Components
+Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32. So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project.
 
-## Sensor FAQ
-- OK 3.3V
-- The sensor is powered up and ready after 60 seconds. The sensor might output HIGH several times during that period. There should be as little motion as possible in the sensor's field of view during that period.
-- The device does NOT suffer from contact bounce (which causes interrupt handling of GPIO_INTR_ANYEDGE GPIO_INTR_POSEDGE GPIO_INTR_NEGEDGE to not work properly).
-- The PIR (Passive Infra-Red) Sensor is a pyroelectric device that detects motion by measuring changes in the infrared levels emitted by surrounding objects. This motion can be detected by checking for a high signal on a single I/O pin. It measures heat levels so moving a wooden stick does not make it go *ON.
-- Sensing angle: 110 degrees.
-- The sensor is designed to adjust to slowly changing conditions that would happen normally as the day progresses and the environmental conditions change.
-- The sensor is sensitive to sudden wind flow and strong closeby light sources.
-- The module contains the IC BISS0001 PIR motion detector. It processes the output of the analog sensor and transforms it in a digital signal.
-- The module contains the IC Holtek HT7133-1 regulator. It has a 1.7V Voltage Dropout, which means it reduces voltage from 5V to 3.3V :)
+The libraries can roughly be divived in 3 groups:
+1. Related to programmming in the C language which has its own quirks, as any programming language does.
+2. Related to the ESP32 environment and the specifics of embedded systems.
+3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: temperature sensors, RTC clocks, PIR and obstacle sensors, file systems.
 
-## Data Pin Logic (no protocol)
-- DATA Pin logic: High 3.3V , Low 0V
-- The pin is HIGH (3.3V) when movement is detected (and stays so for X seconds during the time decay period).
-- The pin is LOW (0V) when no movement is detected.
-- The wiring requires a 10K pullup resistor (DATA->VCC).
-- @important No extra pullup resistor needed on the DATA PIN because I have enabled the ESP32 internal pullup resistor for the data pin in the software.
+Let's highlight a few.
+ 
+#### C Language
+- Linked lists using the Linux Kernel implementation.
+- Manage strings.
+- Manage date & time.
+- Manage BCD (binary-coded-decimal).
 
-## Sensor known ISSUES
-*NONE
+#### ESP32 General
+- Logging.
+- Deep sleep.
+
+#### Networking
+- Synchronizing the datetime (SNTP).
+- Resolve hostnames using DNS.
+- Get current IP address.
+- Check if Internet is available.
+
+#### Wifi
+- Manage Wifi connections.
+
+#### MQTT
+- Manage MQTT publish/subscribe.
+
+#### Peripherals - Sensors
+- AM2320 temperature sensor by Aosong.
+- DHT11 temperature sensor by Aosong.
+- BH1750FVI light sensor.
+- Bosch BME280 meteo sensor.
+- Bosch BMP280 meteo sensor.
+- HC-SR501 PIR motion sensor.
+- KY-032 Infrared obstacle avoidance sensor.
+
+#### Peripherals - Devices
+- ZS-042 DS1302 Real Time Clock.
+
+## How do you use the ESP32 Starter Kit?
+The easiest way is to open a project that contains the components that you are interested in.
+
+Read the instructions for the hardware, wiring, and software setup.
+
+Run it and study the source code.
+
+## What are the requirements of the ESP32 Starter Kit
+1. A working ESP-IDF installation (http://esp-idf.readthedocs.io/en/latest/get-started/index.html)
+2. Clone the Github repository.
+3. `cd` into the directory of the project you want to explore.
+4. Run `make flash monitor` to build and upload the example to your dev board and connect to it's serial terminal.
+
+## FAQ
+- The Starter Kit gets you started quickly. If you need extra features then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. The Starter Kit is not designed to implement all conceivable features of any project.
+
+## Known ISSUES
+
