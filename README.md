@@ -6,19 +6,27 @@ The objective of this Starter Kit is to accelerate the development of your IoT p
 
 Are you ready to discover how you can get started quickly.
 
-## Why chosing the ESP-IDF framework?
+## Why choose the ESP-IDF framework?
 You have 2 options to start developing for the ESP32 chip:
-1. Use "ESP-IDF", the extensible official Espressif IoT Development Framework of Espressif. This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
-2. Use the official "Arduino Core For ESP32" framework of Espressif. This is a hardware abstraction layer for Arduino IDE so you can target the ESP32 chip. The big advantage is that you can empower your existing knowledge of the Arduino IDE. The downside is that it is not that feature-rich compared to ESP-IDF. And the development pace is slower and not all features of ESP-IDF have been ported to Arduino.
+1. Use "ESP-IDF", the extensible official Espressif IoT Development Framework of Espressif. \
+This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
+2. Use the official "Arduino Core For ESP32" framework of Espressif.\
+This is a hardware abstraction layer for Arduino IDE so you can target the ESP32 chip. The big advantage is that you can empower your existing knowledge of the Arduino IDE. The downside is that it is not that feature-rich compared to ESP-IDF. And the development pace is slower and not all features of ESP-IDF have been ported to Arduino.
 
 It is important to know that both frameworks are stable and usable but they are still under significant development by Espressif, and major new releases are coming out on a regularly basis; I expect this to continue at least until 2018Q4.
 
 After experimenting with both frameworks I decided to go with the ESP-IDF framework, more specifically V3.0 and higher. I always try to release libraries that are compatible with the last major release and eventually the master branch.
 
-## Why do I need a starter kit?
-Although the ESP-IDF framework (and its documentation) is very powerful and extensive, I found it difficult to get started quickly. The extensive framework is nice but I found it hard to get started creating real projects for real solutions. I wanted to start with controlling various sensors in anetwork, and then move on to more complex projects.
+## Why would you need this starter kit?
+The ESP-IDF framework (and its documentation) is very powerful and extensive.
 
-So this is why I have released this ESP32 Starter Kit.
+But I found it difficult to get started quickly, for me being a seasoned full stack developer (backend/frontend) without much experience developing IoT solutions that use embedded systems as well. PS So being a Full Stack Developer doesn;t mean you know everything there is, right?
+
+More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and develop real projects for real solutions. For example, I wanted to start with projects controlling various sensors in a network, and then move on to more complex projects.
+
+So I developed over time these extra components, including many working projects targeting a complete set of peripherals that are typically used in IoT projects.
+
+And I thought now was a good time to release everything I learned so far to the ESP32 community so everyone can benefit from this work.
 
 ## What is in the Starter Kit?
 ### Working projects.
