@@ -44,14 +44,16 @@ b. Lolin32 Lite
 - You have to cut off the wires from the big internal connector.
 
 - External 6-pin DF13 connector. This is the GPS UART interface.
-    MY DUPONT CABLE		GPS Cable	Function
-    -----------------	----------	----------
-    Groen               RED         VCC
-    Grijs               BLACK       GND
-    Paars               YELLOW      UART TXD
-    Blauw               ORANGE      UART RXD
+    MY DUPONT CABLE    GPS Cable    Function
+ 	 -----------------  ----------   ----------
+    Groen              RED          VCC
+    Grijs              BLACK        GND
+ 	 Paars              YELLOW       UART TXD
+ 	 Blauw              ORANGE       UART RXD
 
 - External 4-pin DF13 connector. This is the COMPASS I2C interface ***NOTUSED***.
+    GPS Cable   Function
+    ---------   --------
     GREEN       I2C SCL
     BLACKISH    I2C SDA
 ```
