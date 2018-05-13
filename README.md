@@ -13,11 +13,11 @@ Ublox NEO-M8N GPS Module with Shell.
 - Dumping Message UBX->MON->VER:
 
 ```
-	swver: ROM CORE 3.01 (107888)
-	hwver: 00080000
-	ext:    
-	    PROTVER=18.00
-	    FWVER=SGP 3.01
+swver: ROM CORE 3.01 (107888)
+hwver: 00080000
+ext:    
+    PROTVER=18.00
+    FWVER=SGP 3.01
 ```
 
 ## Tool u-center V8.29 from ublox:
@@ -45,11 +45,11 @@ b. Lolin32 Lite
 
 - External 6-pin DF13 connector. This is the GPS UART interface.
     MY DUPONT CABLE    GPS Cable    Function
- 	 -----------------  ----------   ----------
+    -----------------  ----------   ----------
     Groen              RED          VCC
     Grijs              BLACK        GND
- 	 Paars              YELLOW       UART TXD
- 	 Blauw              ORANGE       UART RXD
+    Paars              YELLOW       UART TXD
+    Blauw              ORANGE       UART RXD
 
 - External 4-pin DF13 connector. This is the COMPASS I2C interface ***NOTUSED***.
     GPS Cable   Function
@@ -85,20 +85,20 @@ HEX Commands:
 
 ---Message Structure---
 Header (uint8 uint8)
-	0xB5 0x62
+    0xB5 0x62
 Class ID (uint8)
-	0x02
+    0x02
 ID (uint8)
-	0x41
+    0x41
 Length (uint16) The number format of the length field is a Little-Endian unsigned 16-bit integer.
-	8
+    8
 Payload
-	Offset  NbrFmt              Scaling Name 		Unit 	Description
-	0 	    U4 Unsigned Long	-	    duration    ms      Duration of the requested task, set to zero for infinite duration. The maximum supported time is 12 days.
-    4       X4 Bitfield         -       flags       -       task flags (bit#1 = "backup" The receiver goes into backup mode for a time period defined by duration. Provided that it is not connected to USB)
+    Offset  NbrFmt              Scaling Name         Unit     Description
+    0       U4 Unsigned Long    -       duration     ms       Duration of the requested task, set to zero for infinite duration. The maximum supported time is 12 days.
+    4       X4 Bitfield         -       flags        -        Task flags (bit#1 = "backup" The receiver goes into backup mode for a time period defined by duration. Provided that it is not connected to USB)
 Checksum (The two 1-byte CK_A and CK_B fields hold a 16-bit checksum whose calculation is defined below)
-	CK_A	uint8
-	CK_B	uint8
+    CK_A    uint8
+    CK_B    uint8
 
 
 ===UBX-CFG-RST: Reset Receiver / Clear Backup Data Structures===
@@ -117,30 +117,30 @@ HEX Commands:
 
 ---Message Structure---
 Header (uint8 uint8)
-	0xB5 0x62
+    0xB5 0x62
 Class ID (uint8)
-	0x06
+    0x06
 ID (uint8)
-	0x04
+    0x04
 Length (uint16) The number format of the length field is a Little-Endian unsigned 16-bit integer.
-	4
+    4
 Payload
-	Offset NbrFmt Scaling 	Name 		Unit 	Description
-	0 	uint16	-	navBbrMask	-	BBR Sections to clear. The following Special Sets apply: 
-									0x0000 Hot start
-									0x0001 Warm start
-									0xFFFF Cold start
-	2 	uint8 	- 	resetMode 	- 	Reset Type: 
-									0x00 - HW reset
-									0x01 - Controlled SW reset
-									0x02 - Controlled SW reset (GNSS only)
-									0x04 - HW reset after shutdown
-									0x08 - Controlled GNSS stop
-									0x09 - Controlled GNSS start
-	3	uint8	-	reserved1	-	Reserved
+    Offset NbrFmt    Scaling Name         Unit     Description
+    0      uint16    -       navBbrMask    -       BBR Sections to clear. The following Special Sets apply: 
+                                    0x0000 Hot start
+                                    0x0001 Warm start
+                                    0xFFFF Cold start
+    2      uint8     -       resetMode     -        Reset Type: 
+                                    0x00 - HW reset
+                                    0x01 - Controlled SW reset
+                                    0x02 - Controlled SW reset (GNSS only)
+                                    0x04 - HW reset after shutdown
+                                    0x08 - Controlled GNSS stop
+                                    0x09 - Controlled GNSS start
+    3      uint8    -        reserved1    -    Reserved
 Checksum (The two 1-byte CK_A and CK_B fields hold a 16-bit checksum whose calculation is defined below)
-	CK_A	uint8
-	CK_B	uint8
+    CK_A    uint8
+    CK_B    uint8
 
 
 ===UBX-CFG-RATE: Navigation/Measurement Rate Settings===
@@ -159,27 +159,27 @@ HEX Commands:
 
 ---Message Structure---
 Header (uint8 uint8)
-	0xB5 0x62
+    0xB5 0x62
 Class ID (uint8)
-	0x06
+    0x06
 ID (uint8)
-	0x08
+    0x08
 Length (uint16) The number format of the length field is a Little-Endian unsigned 16-bit integer.
-	6
+    6
 Payload
-	Offset 	NbrFmt 	Scaling	Name 		Unit 	Description
-	0 	uint16	-	measRate	ms	The elapsed time between GNSS measurements, which defines the rate, e.g. 100ms => 10Hz, 1000ms => 1Hz, 10000ms => 0.1Hz
-								   75ms = 0x4B 0x00 FASTEST
-								 1000ms = 0xE8 0x03 DEFAULT
-								 5000ms = 0x88 0x13 SLOWER
-								50000ms = 0x50 0xC3 SLOWEST
+    Offset  NbrFmt  Scaling Name      Unit   Description
+    0       uint16  -       measRate  ms     The elapsed time between GNSS measurements, which defines the rate, e.g. 100ms => 10Hz, 1000ms => 1Hz, 10000ms => 0.1Hz
+                                   75ms = 0x4B 0x00 FASTEST
+                                 1000ms = 0xE8 0x03 DEFAULT
+                                 5000ms = 0x88 0x13 SLOWER
+                                50000ms = 0x50 0xC3 SLOWEST
 
-	2 	uint16 	- 	navRate 	cycle 	The ratio between the number of measurements and the number of navigation solutions, 
-							e.g. 5 means five measurements for every navigation solution. Max. value is 127.
-								1 = DEFAULT (OK).
+    2       uint16  -       navRate   cycle  The ratio between the number of measurements and the number of navigation solutions, 
+                            e.g. 5 means five measurements for every navigation solution. Max. value is 127.
+                                1 = DEFAULT (OK).
 Checksum (The two 1-byte CK_A and CK_B fields hold a 16-bit checksum whose calculation is defined below)
-	CK_A	uint8
-	CK_B	uint8
+    CK_A    uint8
+    CK_B    uint8
 ```
 
 ##
