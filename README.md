@@ -5,9 +5,9 @@ This is component based on ESP-IDF for ESP32.
 my_neom8n_gps_using_lib
 
 ## Shop Product.
-Ublox NEO-M8N GPS Module with Shell
+Ublox NEO-M8N GPS Module with Shell.
 
-## CHIP SYSINFO
+## CHIP SYSINFO for this specific GPS Board
 - The system software runs from ROM (opposed to from Flash). The module contains no Flash so firmware upgrades are not possible (which is OKAY as the ROM contains a recent version V3.x).
 - The board supports UBX Protocol Version 18.00 (a recent version).
 - Dumping Message UBX->MON->VER:
@@ -55,12 +55,6 @@ b. Lolin32 Lite
     GREEN       I2C SCL
     BLACKISH    I2C SDA
 ```
-
-### Component PIN layout
-TODO
-
-### Component for the UART protocol
-TODO
 
 ## Data Sheet
 Go to the _doc directory.
