@@ -1,6 +1,6 @@
 # ESP32 Starter Kit MJD
 ## Introduction
-Do you also want to create innovative IoT projects that use the ESP32 chip, or ESP32-based modules, of Espressif? Well, I did and still do and I hope you do too.
+Do you also want to create innovative IoT projects that use the ESP32 chip, or ESP32-based modules, of the innovative company Espressif? Well, I did and still do and I hope you do too.
 
 The objective of this Starter Kit is to accelerate the development of your IoT projects for ESP32 using the ESP-IDF framework from Espressif.
 
@@ -23,15 +23,15 @@ The ESP-IDF framework (and its documentation) is very powerful and extensive.
 
 But I found it difficult to get started quickly, for me being a seasoned full stack developer (backend/frontend) without much experience developing IoT solutions that use embedded systems as well. PS So being a Full Stack Developer doesn't mean you know everything there is, right?
 
-More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and develop real projects for real solutions using peripherals such as sensors ans GPS boards. For example, I wanted to start with projects controlling various sensors in a network, and then move on to more complex projects.
+More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and develop real projects for real solutions using peripherals such as sensors and GPS boards and LED strips. For example, I wanted to start with projects controlling various sensors in a network, and then move on to more complex projects.
 
 So I developed over time these extra components, including many working projects targeting a complete set of peripherals/sensors that are typically used in IoT projects.
 
 And I thought now was a good time to release everything I learned so far to the ESP32 community so everyone can benefit from this work.
 
 ## What are the requirements of the ESP32 Starter Kit
-1. A working installation of the Espressif ESP-IDF V3 development framework (http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
-2. A C language editor or the Eclipse IDE CDT.
+1. A working installation of the Espressif ESP-IDF V3 development framework (instructions @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
+2. A C language editor or the Eclipse IDE CDT (instructions also @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
 
 ## What is in the Starter Kit?
 ### Working Projects.
@@ -58,22 +58,22 @@ Let's highlight a few projects that demonstrate how to use the core ESP-IDF fram
 - Wifi SSID spammer.
 
 Let's highlight a few projects that demonstrate how to use the extra components of the ESP32 Starter Kit.
-- MJD Components (this project demonstrates best practices when using ESP-IDF and example code for all non-peripheral components such as linked lists, ESP chip interfaces, Wifi, networking, MQTT, ...).
-- AM2320 meteo sensor.
-- BH1750 light intensity sensor.
-- BME280 meteo sensor.
-- BMP280 meteo sensor.
-- DHT11 temperature sensor.
-- GPS Ublox NEO-M8N module.
-- HC-SR501 PIR human infrared sensor
-- KY-032 infrared obstacle avoidance sensor.
-- RGB LED strips.
-- ZS-042 DS1302 RTC realtime clock.
+- `mjd_components` Demonstrates best practices when using ESP-IDF and example code for all non-peripheral components such as linked lists, ESP chip interfaces, Wifi, networking, MQTT, ....
+- `my_am2320_temperature_sensor_using_lib` Demonstrates how to read data from the AM2320 meteo sensor.
+- `my_bh1750fvi_lightsensor_using_lib` Demonstrates how to read data from the BH1750 light intensity sensor.
+- `my_bme280_sensor_using_lib` Demonstrates how to read data from the BME280 meteo sensor.
+- `my_bmp280_sensor_using_lib` Demonstrates how to read data from the BMP280 meteo sensor.
+- `my_dht11_temperature_sensor_using_lib` Demonstrates how to read data from the DHT11 temperature sensor.
+- `my_hcsr501_pir_sensor_using_lib` Demonstrates how to read data from the HC-SR501 PIR human infrared sensor
+- `my_ky032_obstacle_sensor_using_lib` Demonstrates how to read data from the KY-032 infrared obstacle avoidance sensor.
+- `my_ledrgb_using_lib` Demonstrates how to control RGB LED strips (such as the Adafruit Neopixels).
+- `my_neom8n_gps_using_lib` Demonstrates how to get GPS data from the GPS Ublox NEO-M8N module.
+- `my_zs042_clock_using_lib` Demonstrates how to get/set data from the ZS-042 DS1302 RTC realtime clock.
 
 ### Extra ESP-IDF Components
 Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32.
 
-So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project.
+So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project (a big plus).
 
 The components can roughly be divided in 3 groups:
 1. Related to programmming in the C language (which has its own quirks as all other programming languages). Example: linked lists.
