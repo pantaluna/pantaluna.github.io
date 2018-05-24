@@ -1,219 +1,149 @@
-# ESP-IDF MJD Ublox NEO-M8N GPS component
-This is component based on ESP-IDF for ESP32.
+# ESP32 Starter Kit MJD
+## Introduction
+Do you also want to create innovative IoT projects that use the ESP32 chip, or ESP32-based modules, of Espressif? Well, I did and still do and I hope you do too.
 
-Your app can initialize & de-initialize the GPS device, and read the actual GPS data (coordinates, fix_quality, number of satellites tracked) from the GPS device using this ESP-IDF component.
+The objective of this Starter Kit is to accelerate the development of your IoT projects for ESP32 using the ESP-IDF framework from Espressif.
 
-The component also exposes optional functions to control the power mode, to enable/disable the GNSS Receiver, to set the Measurement Rate, etc. These functions are typically used in a battery-powered solution.
+Are you ready to discover how you can get started quickly?
 
-The component includes its own RTOS Task to read the NMEA messages coming from the GPS Device via the UART interface. The component stores the latest GPS in its own data structure.
+## Why choose the ESP-IDF framework?
+You have 2 options to start developing for the ESP32 chip:
 
-The app can read the actual / latest available data with a simple function call (see the example project) even when the device is powered-down at that moment.
+1. Use "ESP-IDF", the extensible official Espressif IoT Development Framework of Espressif. \
+This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
+2. Use the official "Arduino Core For ESP32" framework of Espressif.\
+This is a hardware abstraction layer for Arduino IDE so you can target the ESP32 chip. The big advantage is that you can empower your existing knowledge of the Arduino IDE. The downside is that it is not that feature-rich compared to ESP-IDF. And the development pace is slower and not all features of ESP-IDF have been ported to Arduino.
 
-The data structure consists of:
-- Fix quality (0: no Fix | 1: 3D Fix)
-- Latitude
-- Longitude
-- Number of satellites being tracked 
+It is important to know that both frameworks are stable and usable but they are still under significant development by Espressif, and major new releases are coming out on a regularly basis; I expect this to continue at least until 2018Q4.
+
+After experimenting with both frameworks I decided to go with the ESP-IDF framework, more specifically V3.0 and higher. I always try to release libraries that are compatible with the last major release and eventually the master branch.
+
+## Why would you need this starter kit?
+The ESP-IDF framework (and its documentation) is very powerful and extensive.
+
+But I found it difficult to get started quickly, for me being a seasoned full stack developer (backend/frontend) without much experience developing IoT solutions that use embedded systems as well. PS So being a Full Stack Developer doesn't mean you know everything there is, right?
+
+More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and develop real projects for real solutions using peripherals such as sensors ans GPS boards. For example, I wanted to start with projects controlling various sensors in a network, and then move on to more complex projects.
+
+So I developed over time these extra components, including many working projects targeting a complete set of peripherals/sensors that are typically used in IoT projects.
+
+And I thought now was a good time to release everything I learned so far to the ESP32 community so everyone can benefit from this work.
+
+## What are the requirements of the ESP32 Starter Kit
+1. A working installation of the Espressif ESP-IDF V3 development framework (http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
+2. A C language editor or the Eclipse IDE CDT.
+
+## What is in the Starter Kit?
+### Working Projects.
+Firstly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself).
+
+These projects:
+- Give insights in how to actually use the official ESP-IDF framework efficiently.
+- Include a ton of best coding practices and best configuration practices.
+- Demonstrate how to use the new ESP-IDF components of this Starter Kit, such as RGB LED strips and meteo sensors (see next section).
+
+Let's highlight a few projects that demonstrate how to use the core ESP-IDF framework.
+- Battery wearer.
+- Button basics.
+- GPIO basics.
+- GPIO scanner.
+- I2C scanner.
+- LEDC basics.
+- SPIFFS basics.
+- Timer basics.
+- UART basics.
+- Wifi device scanner.
+- Wifi SSID cloner.
+- Wifi SSID scanner.
+- Wifi SSID spammer.
+
+Let's highlight a few projects that demonstrate how to use the extra components of the ESP32 Starter Kit.
+- MJD Components (this project demonstrates best practices when using ESP-IDF and example code for all non-peripheral components such as linked lists, ESP chip interfaces, Wifi, networking, MQTT, ...).
+- AM2320 meteo sensor.
+- BH1750 light intensity sensor.
+- BME280 meteo sensor.
+- BMP280 meteo sensor.
+- DHT11 temperature sensor.
+- GPS Ublox NEO-M8N module.
+- HC-SR501 PIR human infrared sensor
+- KY-032 infrared obstacle avoidance sensor.
+- RGB LED strips.
+- ZS-042 DS1302 RTC realtime clock.
+
+### Extra ESP-IDF Components
+Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32.
+
+So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project.
+
+The components can roughly be divided in 3 groups:
+1. Related to programmming in the C language (which has its own quirks as all other programming languages). Example: linked lists.
+2. Related to the ESP32 environment and the specifics of embedded systems. Some examples: an easy Wifi component, the SPIFFS file system. They make those ESP-IDF features much easier to use.
+3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: RGB LED's, temperature sensors, GPS boards, RTC clocks, PIR sensors, and obstacle sensors. The component abstracts the complexity of the sensor, and make it much easier to use.
+
+Let's highlight a few.
  
-## Example ESP-IDF project
-my_neom8n_gps_using_lib
+#### C Language
+- Linked lists using the Linux Kernel implementation.
+- Manage strings.
+- Manage date & time.
+- Manage BCD (binary-coded-decimal).
 
-## Shop Product.
-Ublox NEO-M8N GPS Module with Shell.
+#### ESP32 General
+- Logging.
+- Deep sleep.
 
-## CHIP Info for this specific GPS Board
-- The system software runs from ROM (opposed to from Flash). The module contains no Flash so firmware upgrades are not possible; this is okay because the ROM contains a recent version V3.x.
-- The board supports UBX Protocol Version 18.00 (a recent version). A dump of the message UBX->MON->VER:
+#### Networking
+- Synchronizing the datetime (SNTP).
+- Resolve hostnames using DNS.
+- Get current IP address.
+- Check if Internet is available.
 
-```
-    swver: ROM CORE 3.01 (107888)
-    hwver: 00080000
-    ext:
-        PROTVER=18.00
-        FWVER=SGP 3.01
-```
+#### Wifi
+- Manage Wifi connections.
 
-## Data Sheet
-https://www.u-blox.com/en/product/neo-m8-series
+#### MQTT
+- Manage MQTT publish/subscribe.
 
-Go to the _doc directory for more documents and images.
+#### Peripherals - Devices
+- GPS Ublox NEO-M8N module.
+- ZS-042 DS1302 Real Time Clock.
 
-## WIRING INSTRUCTIONS
-### MCU Adafruit HUZZAH32
-- Pin #13 = Blue LED on the PCB
-- Pin #23 = UART1 RX
-- Pin #22 = UART1 TX
+#### Peripherals - RGB LED's
+This component supports several RGB LED packages. It comes with the essential documentation such as data sheets, schematics, and instructions on how to wire them to your development board.
 
+- RGB LED packages WS2812, WS2812B, WS2813xs from the manufacturer Worldsemi http://www.world-semi.com/solution/list-4-1.html 
+- Adafruit's Neopixels that use the aforementioned packages.
 
-### GPS Board
-You typically want to use the GPS Device with your ESP32 on a breadboard (female connectors) for development, but also with an FTDI Board (typically male connectors) so you can access and test the GPS board using the u-center software from ublox on your PC.
+#### Peripherals - Sensors
+These components come with the essential documentation such as data sheets, schematics, and instructions on how to wire them to your development board.
 
-This means that the wires from the GPS device must somehow have twin connectors. 
+- AM2320 temperature sensor by Aosong.
+- DHT11 temperature sensor by Aosong.
+- BH1750FVI light sensor.
+- Bosch BME280 meteo sensor.
+- Bosch BMP280 meteo sensor.
+- HC-SR501 PIR motion sensor.
+- KY-032 Infrared obstacle avoidance sensor.
 
-The best approach is to cut off the big white Pixhawk DF13 connector from the cable. For each of the 4 wires that came off of the DF13 connector Do get a male-to-female Dupont wire and cut it in half, and solder both ends to the wire. Goto the _doc folder for pictures of the GPS device and cables.
+## How do you use the ESP32 Starter Kit?
+The easiest way is to open a project directory that contains the features that you are interested in.
 
-The function of each colored wire varies, even for models that seem the same on the outside. So open the black circular GPS cover (unscrew the back) and find inside the markings on the back of the PCB that explain what the function is for each wire (VCC, GND, RX, TX). You only have to document the 4 wires that were on the big white DF13 connector (not the smaller connector).
+Read the instructions in the README for the hardware, wiring, and software setup. The wiring instructions of the components can be found in their respective component directory. The documentation typically documents the wiring for the Adafruit HUZZAH32 (a good ESP32 development board).
 
-```
-- External 6-pin DF13 connector.
-This is the GPS UART interface.
-    
-    MY DUPONT CABLE    GPS Cable    Function    ESP32 Pin / FTDI Pin
-    -----------------  ----------   ----------  --------------------
-    Green              RED          VCC         VCC
-    Grey               BLACK        GND         GND
-    Purple             YELLOW       UART TX     UART RX
-    Blue               ORANGE       UART RX     UART TX
-
-- External 4-pin DF13 connector.
-This is the COMPASS I2C interface ***NOTUSED***.
-
-    GPS Cable   Function  ESP32 Pin / FTDI Pin
-    ---------   --------  --------------------
-    GREEN       I2C SCL   not used
-    BLACKISH    I2C SDA   not used
-```
+1. Verify that you have a working installation of the Espressif ESP-IDF V3 development framework (http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
+2. A C language editor or the Eclipse IDE CDT.
+3. Clone this Github repository.
+4. `cd` into the directory of the project you want to explore.
+5. Read the (wiring) instructions in the README of the project, and the README of all the extra components that are used in this project. the latter contains the wiring instructions if wiring is required.
+6. Run `make flash monitor` to build and upload the example to your dev board and connect to it's serial terminal.
 
 
-## Tool u-center V8.29 from ublox
-The first thing you want to do with this GPS product is to use this tool from ublox for MS Windows to test and configure the device and learn how the NMEA and UBX messages work.
-
-You need an FTDI USB-UART board to connect the GPS Board to the computer. Wire it up using the soldered Dupont wires that are described in the previous section. Make sure to connect the TX wire of the GPS device to the RX connector of the FTDI board, and vice versa for the RX wire).
-
-- @download https://www.u-blox.com/en/product/u-center-windows
-- Set baudrate = 9600 in the Ublox software.
-- Go to the ucenter Messages view to discover the hexadecimal code sequences for UBX commands (Slide up the lower half of the split window & copypaste to my programme!).
-- All multi-byte values of the UBX commands are ordered in Little Endian format, unless otherwise indicated.
-- The checksum of the UBX commands is calculated over the Message, starting and including the CLASS field, up until, but excluding, the Checksum Field.
-
-## GPS FAQ
-- OK 3.3V supply voltage.
-- Features a GPS Receiver + Compass.
-- The default baudrate for the UART1 is 9600 (this baudrate is also used by the Ublox u-center software).
-- GNSS stands for Global Navigation Satellite System, and is an umbrella term that encompasses all global satellite positioning systems. This includes constellations of satellites orbiting over the earth’s surface and continuously transmitting signals that enable users to determine their position. The Global Positioning System (GPS) is one component of the Global Navigation Satellite System.
-- The blue led on top of the GPS shell blinks if the GPs has a FIX (mostly "3D").
-
-## Sending UBX CFG Messages using the u-center software
-This section document some useful Ublox UBX Protocol commands that can be sent to the GPS device. These commands are also implemented in the ESP-IDF component so you can execute them by just calling a simple C function.
-
-```
-===UBX-RXM-PMREQ: Requests a Power Management task=== power down (time delimited or infinite)
-HEX Commands:
-- ucenter Version=0 Duration=15000 Action=2: 15 seconds
-    B5 62 02 41 08 00 98 3A 00 00 02 00 00 00 1F 91
-    {0xB5, 0x62, 0x02, 0x41, 0x08, 0x00, 0x98, 0x3A, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x1F, 0x91}
-
-- ucenter Version=0 Duration=0 Action=2: infinite (=12 days!) It ALSO wakes up when you send whatever UBX command...
-    B5 62 02 41 08 00 00 00 00 00 02 00 00 00 4D 3B
-    {0xB5, 0x62, 0x02, 0x41, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x4D, 0x3B}
-
----Message Structure---
-Header (uint8 uint8)
-    0xB5 0x62
-Class ID (uint8)
-    0x02
-ID (uint8)
-    0x41
-Length (uint16) The number format of the length field is a Little-Endian unsigned 16-bit integer.
-    8
-Payload
-    Offset  NbrFmt            Scaling Name      Unit  Description
-    0       U4 Unsigned Long  -       duration  ms    Duration of the requested task, set to zero for infinite duration. The maximum supported time is 12 days.
-    4       X4 Bitfield       -       flags     -     Task flags (bit#1 = "backup"
-                                  The receiver goes into backup mode for a time period defined by duration. 
-                                  Provided that it is not connected to USB)
-Checksum (The two 1-byte CK_A and CK_B fields hold a 16-bit checksum whose calculation is defined below)
-    CK_A    uint8
-    CK_B    uint8
 
 
-===UBX-CFG-RST: Reset Receiver / Clear Backup Data Structures===
-HEX Commands:
-- ucenter Startup=Coldstart + Reset=Forced(Watchdog): ***All information is lost so the GPS has to start finding all satellites again (this takes a lot of time)***
-    B5 62 06 04 04 00 FF B9 00 00 C6 8B
-    {0xB5, 0x62, 0x06, 0x04, 0x04, 0x00, 0xFF, 0xB9, 0x00, 0x00, 0xC6, 0x8B}
+## FAQ
+- The ESP32 Starter Kit gets you started quickly. If you need extra features that seem a good fit for the Starter Kit then please submit an issue. If the feature is very specific to your project then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. The Starter Kit is not designed to implement all conceivable features of any ESP32 project.
 
-- ucenter GNSS=stop + Startup=User Defined + Reset=*NONE: (only stops GNSS  = low power!)
-    B5 62 06 04 04 00 00 00 08 00 16 74
-    {0xB5, 0x62, 0x06, 0x04, 0x04, 0x00, 0x00, 0x00, 0x08, 0x00, 0x16, 0x74}
+## Known Issues
 
-- ucenter GNSS=start + Startup=User Defined + Reset=*NONE: (only starts GNSS = normal power!)
-    B5 62 06 04 04 00 00 00 09 00 17 76
-    {0xB5, 0x62, 0x06, 0x04, 0x04, 0x00, 0x00, 0x00, 0x09, 0x00, 0x17, 0x76}
-
----Message Structure---
-Header (uint8 uint8)
-    0xB5 0x62
-Class ID (uint8)
-    0x06
-ID (uint8)
-    0x04
-Length (uint16) The number format of the length field is a Little-Endian unsigned 16-bit integer.
-    4
-Payload
-    Offset NbrFmt    Scaling Name         Unit     Description
-    0      uint16    -       navBbrMask    -       BBR Sections to clear. The following Special Sets apply: 
-                                    0x0000 Hot start
-                                    0x0001 Warm start
-                                    0xFFFF Cold start
-    2      uint8     -       resetMode     -        Reset Type: 
-                                    0x00 - HW reset
-                                    0x01 - Controlled SW reset
-                                    0x02 - Controlled SW reset (GNSS only)
-                                    0x04 - HW reset after shutdown
-                                    0x08 - Controlled GNSS stop
-                                    0x09 - Controlled GNSS start
-    3      uint8    -        reserved1    -    Reserved
-Checksum (The two 1-byte CK_A and CK_B fields hold a 16-bit checksum whose calculation is defined below)
-    CK_A    uint8
-    CK_B    uint8
-
-
-===UBX-CFG-RATE: Navigation/Measurement Rate Settings===
-HEX Commands:
-- ucenter TimeSource="1-GPS Time" MeasurementPeriod=1000ms: ***DEFAULT***
-    B5 62 06 08 06 00 E8 03 01 00 01 00 01 39
-    {0xB5, 0x62, 0x06, 0x08, 0x06, 0x00, 0xE8, 0x03, 0x01, 0x00, 0x01, 0x00, 0x01, 0x39}
-
-- ucenter TimeSource="1-GPS Time" MeasurementPeriod=100ms:
-    B5 62 06 08 06 00 64 00 01 00 01 00 7A 12
-    {0xB5, 0x62, 0x06, 0x08, 0x06, 0x00, 0x64, 0x00, 0x01, 0x00, 0x01, 0x00, 0x7A, 0x12}
-
-- ucenter TimeSource="1-GPS Time" MeasurementPeriod=5000ms:
-    B5 62 06 08 06 00 88 13 01 00 01 00 B1 49
-    {0xB5, 0x62, 0x06, 0x08, 0x06, 0x00, 0x88, 0x13, 0x01, 0x00, 0x01, 0x00, 0xB1, 0x49}
-
----Message Structure---
-Header (uint8 uint8)
-    0xB5 0x62
-Class ID (uint8)
-    0x06
-ID (uint8)
-    0x08
-Length (uint16) The number format of the length field is a Little-Endian unsigned 16-bit integer.
-    6
-Payload
-    Offset  NbrFmt  Scaling Name      Unit   Description
-    0       uint16  -       measRate  ms     The elapsed time between GNSS measurements, 
-                                             which defines the rate, e.g. 100ms => 10Hz, 1000ms => 1Hz, 10000ms => 0.1Hz
-                                   75ms = 0x4B 0x00 FASTEST
-                                 1000ms = 0xE8 0x03 DEFAULT
-                                 5000ms = 0x88 0x13 SLOWER
-                                50000ms = 0x50 0xC3 SLOWEST
-    2       uint16  -       navRate   cycle  The ratio between the number of measurements 
-                                             and the number of navigation solutions, 
-                                             e.g. 5 means five measurements for every navigation solution. 
-                                             Max. value is 127.
-                                1 = DEFAULT (OK).
-Checksum (The two 1-byte CK_A and CK_B fields hold a 16-bit checksum whose calculation is defined below)
-    CK_A    uint8
-    CK_B    uint8
-```
-
-##
-## FYI PixHawk flight controller instructions:
-Connect the GPS’s Hirose DF13 6-pin connector to the Pixhawk GPS port and the compass’s Hirose DF13 4-pin connector to the I2C port.
-
-
-## Known ISSUES
-/
+## What Is Next
+Please share your experiences using this ESP32 Starter Kit with the ESP32 community.
