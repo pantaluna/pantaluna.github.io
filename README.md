@@ -1,149 +1,155 @@
-# ESP32 Starter Kit MJD
+# ESP-IDF MJD LED RGB LED component for WS2812, WS2812B and WS2813x
+This component has been developed to make it easy to work with the RGB LED packages of the manufacturer Worldsemi. The most popular product line is the Adafruit Neopixels. The component will also work for simple environments such as a few RGB LED's on a PCB.
+
+The component is based on the ESP-IDF V3 framework for the ESP32 hardware from Espressif.
+
+The component performs very well because it uses the fast RMT peripheral of the ESP32 hardware. The ESP-IDF RMT Driver (a standard ESP-IDF component) is configured by this component to generate signal pulses with an accuracy of 50 nanoseconds; that is accurate enough for these RGB LED chips. The accuracy can be increased to 25 nanoseconds if that is required for future products.
+
+Your app can initialize & de-initialize & work with up to 8 LED strips at the same time, and get/set the color of each LED of the LED strip.
+
+The app only has to specify the type of RGB LED package, the number of LED's, the GPIO Output PIN number which is wired to the DATA IN pad of the LED strip, and the relative brightness (optional).
+
+The component exposes helper functions to reset all LEDs of a strip to black (zero), and to identify the position of each LED of a LED array.
+
+You can use these building blocks to develop special effects algorithms for your LED strip.
+
+App programming considerations:
+- Change the CPU Frequency from 160 Mhz (=default) to 240 Mhz for optimal performance, especially for long LED strips. You can change this setting in `make menuconfig` Component => ESP-32 Specific => CPU Frequency.
+- The ESP LOG LEVEL must be set to INFO (or WARN or ERROR) for production. However, the ESP LOG LEVEL can be set to DEBUG or VERBOSE for debugging; this dumps a lot of data to the UART, so the LED timings will be wrong, but at least the data dumps are correct and you see exactly in the logs what is going on.
+- Tip: use a logic analyzer, or better an oscilloscope, to analyze the timings of the data signal from the MCU to the LED Board.
+
+Future development: support RGBW LED's, make helper funcs to "write" text on large LED matrixes.
+
+## Supported RGB LED packages
+- WS2812
+- WS2812B ***the most popular RGB LED package in 2017***
+- WS2813A, WS2813B, WS2813C, WS2813D.
+- The Adafruit Neopixels product line which integrates the above mentioned WSx packages from the manufacturer Worldsemi.
+
+Some characteristics:
++ WS2812: RGB LEDs, SMD 6 legs, 5V only (this one does not support 3.3V power nor 3.3V data signals so it can only be used with an ESP32 in combination with a logic level shifter board).
++ WS2812B: RGB LEDs, SMD 4 legs, supports 3.3V and 5V.
++ WS2813A, WS2813B, WS2813C, WS2813D: RGB LEDs, SMD 6 legs, supports 3.3V and 5V, separate power pins for the IC and the LED's, dual-signal wires meaning it has an extra BIN Backup Input Data Pin. The variations A..D feature a different maximum brightness of the LED's and hence a different power consumption.
+
+## Example ESP-IDF project
+my_ledrgb_using_lib
+
+## Shop Products.
+- CJMCU   1 Bit WS2812 5050 RGB LED Driver Development Board
+- CJMCU   4 Bit WS2812 5050 RGB LED Driver Development Board
+- CJMCU   8 Bit WS2812 5050 RGB LED Driver Development Board
+- CJMCU 4x4 Bit WS2812 5050 RGB LED Driver Development Board
+- BTF-LIGHTING WS2813 led pixel strip, DC 5V, length 1m/4m/5m, 30/60/144 pixels/strip/m, IP30/IP65/IP67
+
+Notes:
+- The CJMCU 1 Bit, 4 Bit and 4x4 Bit products listed above are advertised as "WS2812" LED chips but they are actually "WS2812B" LED chips (the "B" ones are newer and better).
+- The CJMCU 8 Bit product contains old "WS2812" LED chips (no "B"). The timings are different...
+- The BTF-LIGHTING WS2813 led pixel strip contains "WS2813B" LED chips.
+
+## Data Sheets
+### Data Sheet WS2812B
+[Go to the _doc directory for more documents and images.]
+
+http://www.world-semi.com/DownLoadFile/108
+
+http://www.world-semi.com/solution/list-4-1.html
+
+### Data Sheet WS2813A WS2813B WS2813C WS2813D
+[Go to the _doc directory for more documents and images.]
+
+http://www.world-semi.com/solution/list-4-1.html
+
+## Soldering instructions, if the board/strip comes without wires
+[See images in the _doc directory]
+
+Most smaller LED boards often just have solder pads on the back.
+
+Most bigger LED boards and LED strips have sets of soldered wires, often with a handy 3pin/4pin SM JST connector. Each set of wires is connected to the strip every +-15 LED's. You need to connect all VCC/GND wires to the power supply to ensure the power is distributed correctly across the whole strip.
+
+A LED board with WS2812B's has these PIN connections: VCC, GND, DATA IN. If 2 GND pads are present on the board then you only have to wire up one pad.
+
+Instructions for small LED boards (<=32 LED packages) with no wires:
+- Use 3 male-male Dupont wires.
+- Solder the male pin of each Dupont wire to an input pad on the LED board: VCC, GND, DATA IN.
+- The male connectors on the other side of the Dupont cable are used later to hook up the breadboard/MCU or the external power supply.
+
+Instructions for WS2813x LED Strips:
+- These strips have an extra signal wire (BACKUP DATA IN) which can be connected in case that the wire of the DATA IN through the LED board/strip is not working anymore. I leave this wire unconnected by default.
+
+## WIRING INSTRUCTIONS
+### MCU Adafruit HUZZAH32 (ESP32)
+- GPIO OUTPUT PIN#14 = 1-Wire TX (you can use another PIN# as long as the PIN# is not reserved by the ESP32 system).
+
+Goto the directory ../../development_boards/ for images with the GPIO PIN layout for some development boards.
+
+### LED Board
+[See images in the _doc directory]
+- Connect input pin GND to the GND pin of the MCU.
+- Connect input pin VCC to the VCC 3.3V pin of the MCU.
+- Connect input pin DATA IN, via a +-470 Ohm resistor, to the GPIO output pin on the MCU.
+- Only for the package WS2813x with the new Backup Data Input pin (BIN): if the DATA IN is not working anymore then connect the BIN pin, via a +-470 Ohm resistor, to the same GPIO output pin on the MCU as the input pin DATA IN.
+
+Notes:
+- If you want to combine multiple LED strips, and address them as one long LED strip, then connect them in series. The IN/OUT pads are present on the back of each LED strip. And use the MJD component's init() func to declare the total number of LED's you actually want to use in your app.
+- If you want to send the same data signal to multiple LED strips then connect the one GPIO output pin to each LED strip's DATA IN pin. This is handy e.g. when having a cube of LED matrixes and you want to show the same pattern on each side of the cube.
+
+# DATA PROTOCOL WS2812 WS2812B WS2813
+You do not have to understand this protocol in order to use this MJD component :)
+
+- The embedded LED driver chip communicates via a unique "NZR" (NonReturnToZero) one-wire interface.
+- All LED chips send the received data synchronously to each LED segment when the DIN port receives a RESET signal.
+- Color (R,G,B) values [0..255]
+    @range 0x00..0xFF
+    @doc 0x20 is bright enough for indoors!
+- One LED: GRB Composition of 24bit Data:
+    G7 G6 G5 G4 G3 G2 G1 G0 R7 R6 R5 R4 R3 R2 R1 R0 B7 B6 B5 B4 B3 B2 B1 B0
+
+## LED RGB FAQ
+- The manufacturer is Worldsemi http://www.world-semi.com/
+- These LED chips are typically called "SMD 5050" because the dimensions of the SMD package is 5.0mm x 5.0mm.
+- The WS2812 / WS2812B / WS2813x packages contain an embedded version of the WS2811 constant-current LED driver package, and 3 individually controlled LEDs; 1 red, 1 green, 1 blue.
+- The WS2811 LED driver package includes:
+    + An internal oscillator
+    + A signal reshaping and amplification circuit
+    + A data latch
+    + A 3-channel, programmable constant current output drive
+    + 2 digital ports (serial output/input)
+- The voltage of the power supplied to the LED board, and the voltage of the output data signal coming from the MCU, must match. An ESP32 development board always uses 3.3V data signals.
+- Each WSx package consumes +-50mA (18mA / color LED) when fully *ON (white 0xFF 0xFF 0xFF at full brightness).
+
+# Notes for large RGB LED arrays and power supply (more than 16 RGB LED packages)
 ## Introduction
-Do you also want to create innovative IoT projects that use the ESP32 chip, or ESP32-based modules, of the innovative company Espressif? Well, I did and still do and I hope you do too.
+Do not power large LED arrays using the 3.3V VCC pin of an ESP32 MCU because its amperage is too low (+-250mA left for the LEDs, even less when using Wifi). Some ESP32 MCU boards also have a 5V PIN but the amperage is also too low.
 
-The objective of this Starter Kit is to accelerate the development of your IoT projects for ESP32 using the ESP-IDF framework from Espressif.
+So you have to use a 5V additional power supply for a large LED array. A "DC Power Plug Jack Adapter Connector 5.5x2.1mm" is handy to connect the wires of the LED Strip to the power supply connector. Also connect a 1000uF capacitor between VCC and GND of the connector of the power supply.
 
-Are you ready to discover how you can get started quickly?
+Remember to also wire GND of the power supply to the pin GND of the MCU.
 
-## Why choose the ESP-IDF framework?
-You have 2 options to start developing for the ESP32 chip:
+Huge LED arrays (>250 LEDS) probably require thicker wires than standard AWG22 Dupont wires for connecting the power supply.
 
-1. Use "ESP-IDF", the extensible official Espressif IoT Development Framework of Espressif. \
-This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
-2. Use the official "Arduino Core For ESP32" framework of Espressif.\
-This is a hardware abstraction layer for Arduino IDE so you can target the ESP32 chip. The big advantage is that you can empower your existing knowledge of the Arduino IDE. The downside is that it is not that feature-rich compared to ESP-IDF. And the development pace is slower and not all features of ESP-IDF have been ported to Arduino.
+Then first try using a 3.3V data signal with a 5V power supply. The products listed above all work in this configuration. This is the simplest configuration. If this scenario does not work for your product then use the other scenario "5V data signal and a 5V power supply".
 
-It is important to know that both frameworks are stable and usable but they are still under significant development by Espressif, and major new releases are coming out on a regularly basis; I expect this to continue at least until 2018Q4.
+## Scenario 3.3V data signal and 5V power supply
+Connect the GPIO OUTPUT PIN of the ESP32 development board to the DATA IN wire of the LED board/strip.
 
-After experimenting with both frameworks I decided to go with the ESP-IDF framework, more specifically V3.0 and higher. I always try to release libraries that are compatible with the last major release and eventually the master branch.
+## Scenario 5V data signal and 5V power supply
+You have to use a logic level shifter board to shift the data signal from 3.3V to 5V (a uni-directional logic level shifter is sufficient). And you want a DIP package if you want to use it on a breadboard.
 
-## Why would you need this starter kit?
-The ESP-IDF framework (and its documentation) is very powerful and extensive.
+@important The popular bi-directional logic level shifters with a BSS138 MOSFET do not work because they shift the signal too slow!
 
-But I found it difficult to get started quickly, for me being a seasoned full stack developer (backend/frontend) without much experience developing IoT solutions that use embedded systems as well. PS So being a Full Stack Developer doesn't mean you know everything there is, right?
+These logic level shifters are known to work for the WS28xx LED strips:
+- TI SN74HCT245 DIP-20 Octal Bus Transceivers With 3-State Outputs
+- TI SN74HCT08N DIP-14 Quadruple 2-Input Positive-AND Gates
 
-More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and develop real projects for real solutions using peripherals such as sensors and GPS boards and LED strips. For example, I wanted to start with projects controlling various sensors in a network, and then move on to more complex projects.
+Instructions:
+- Connect the 3.3V VCC PIN of the ESP32 development board to the 3.3V VCC pin of the logic level shifter board.
+- Connect the GND PIN of the ESP32 development board to the GND pin on the 3.3V side of the logic level shifter board.
+- Connect the 5V VCC PIN of the power supply to the VCC pin on the 5V side of the logic level shifter board.
+- Connect the GND PIN of the power supply to the GND pin on the 5V side of the logic level shifter board.
+- Connect the GPIO OUTPUT PIN of the ESP32 development board to the 3.3V input pin of the logic level shifter board.
+- Connect the 5V OUTPUT PIN of the logic level shifter board to the DATA IN wire of the LED board/strip.
 
-So I developed over time these extra components, including many working projects targeting a complete set of peripherals/sensors that are typically used in IoT projects.
-
-And I thought now was a good time to release everything I learned so far to the ESP32 community so everyone can benefit from this work.
-
-## What are the requirements of the ESP32 Starter Kit
-1. A working installation of the Espressif ESP-IDF V3 development framework (instructions @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
-2. A C language editor or the Eclipse IDE CDT (instructions also @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
-
-## What is in the Starter Kit?
-### Working Projects.
-Firstly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself).
-
-These projects:
-- Give insights in how to actually use the official ESP-IDF framework efficiently.
-- Include a ton of best coding practices and best configuration practices.
-- Demonstrate how to use the new ESP-IDF components of this Starter Kit, such as RGB LED strips and meteo sensors (see next section).
-
-Let's highlight a few projects that demonstrate how to use the core ESP-IDF framework.
-- Battery wearer.
-- Button basics.
-- GPIO basics.
-- GPIO scanner.
-- I2C scanner.
-- LEDC basics.
-- SPIFFS basics.
-- Timer basics.
-- UART basics.
-- Wifi device scanner.
-- Wifi SSID cloner.
-- Wifi SSID scanner.
-- Wifi SSID spammer.
-
-Let's highlight a few projects that demonstrate how to use the extra components of the ESP32 Starter Kit.
-- `mjd_components` Demonstrates best practices when using ESP-IDF and example code for all non-peripheral components such as linked lists, ESP chip interfaces, Wifi, networking, MQTT, ....
-- `my_am2320_temperature_sensor_using_lib` Demonstrates how to read data from the AM2320 meteo sensor.
-- `my_bh1750fvi_lightsensor_using_lib` Demonstrates how to read data from the BH1750 light intensity sensor.
-- `my_bme280_sensor_using_lib` Demonstrates how to read data from the BME280 meteo sensor.
-- `my_bmp280_sensor_using_lib` Demonstrates how to read data from the BMP280 meteo sensor.
-- `my_dht11_temperature_sensor_using_lib` Demonstrates how to read data from the DHT11 temperature sensor.
-- `my_hcsr501_pir_sensor_using_lib` Demonstrates how to read data from the HC-SR501 PIR human infrared sensor
-- `my_ky032_obstacle_sensor_using_lib` Demonstrates how to read data from the KY-032 infrared obstacle avoidance sensor.
-- `my_ledrgb_using_lib` Demonstrates how to control RGB LED strips (such as the Adafruit Neopixels).
-- `my_neom8n_gps_using_lib` Demonstrates how to get GPS data from the GPS Ublox NEO-M8N module.
-- `my_zs042_clock_using_lib` Demonstrates how to get/set data from the ZS-042 DS1302 RTC realtime clock.
-
-### Extra ESP-IDF Components
-Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32.
-
-So after a while I started putting those coding patterns in separate libraries, as any competent developer would do. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project (a big plus).
-
-The components can roughly be divided in 3 groups:
-1. Related to programmming in the C language (which has its own quirks as all other programming languages). Example: linked lists.
-2. Related to the ESP32 environment and the specifics of embedded systems. Some examples: an easy Wifi component, the SPIFFS file system. They make those ESP-IDF features much easier to use.
-3. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: RGB LED's, temperature sensors, GPS boards, RTC clocks, PIR sensors, and obstacle sensors. The component abstracts the complexity of the sensor, and make it much easier to use.
-
-Let's highlight a few.
- 
-#### C Language
-- Linked lists using the Linux Kernel implementation.
-- Manage strings.
-- Manage date & time.
-- Manage BCD (binary-coded-decimal).
-
-#### ESP32 General
-- Logging.
-- Deep sleep.
-
-#### Networking
-- Synchronizing the datetime (SNTP).
-- Resolve hostnames using DNS.
-- Get current IP address.
-- Check if Internet is available.
-
-#### Wifi
-- Manage Wifi connections.
-
-#### MQTT
-- Manage MQTT publish/subscribe.
-
-#### Peripherals - Devices
-- GPS Ublox NEO-M8N module.
-- ZS-042 DS1302 Real Time Clock.
-
-#### Peripherals - RGB LED's
-This component supports several RGB LED packages. It comes with the essential documentation such as data sheets, schematics, and instructions on how to wire them to your development board.
-
-- RGB LED packages WS2812, WS2812B, WS2813xs from the manufacturer Worldsemi http://www.world-semi.com/solution/list-4-1.html 
-- Adafruit's Neopixels that use the aforementioned packages.
-
-#### Peripherals - Sensors
-These components come with the essential documentation such as data sheets, schematics, and instructions on how to wire them to your development board.
-
-- AM2320 temperature sensor by Aosong.
-- DHT11 temperature sensor by Aosong.
-- BH1750FVI light sensor.
-- Bosch BME280 meteo sensor.
-- Bosch BMP280 meteo sensor.
-- HC-SR501 PIR motion sensor.
-- KY-032 Infrared obstacle avoidance sensor.
-
-## How do you use the ESP32 Starter Kit?
-The easiest way is to open a project directory that contains the features that you are interested in.
-
-Read the instructions in the README for the hardware, wiring, and software setup. The wiring instructions of the components can be found in their respective component directory. The documentation typically documents the wiring for the Adafruit HUZZAH32 (a good ESP32 development board).
-
-1. Verify that you have a working installation of the Espressif ESP-IDF V3 development framework (http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
-2. A C language editor or the Eclipse IDE CDT.
-3. Clone this Github repository.
-4. `cd` into the directory of the project you want to explore.
-5. Read the (wiring) instructions in the README of the project, and the README of all the extra components that are used in this project. the latter contains the wiring instructions if wiring is required.
-6. Run `make flash monitor` to build and upload the example to your dev board and connect to it's serial terminal.
-
-
-
-
-## FAQ
-- The ESP32 Starter Kit gets you started quickly. If you need extra features that seem a good fit for the Starter Kit then please submit an issue. If the feature is very specific to your project then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. The Starter Kit is not designed to implement all conceivable features of any ESP32 project.
-
-## Known Issues
-
-## What Is Next
-Please share your experiences using this ESP32 Starter Kit with the ESP32 community.
+## ISSUES
+- You often have to solder wires to the input pads on the back before you can use these products. I prefer boards with presoldered wires & connectors.
+- The timings of the WS2812 / WS2812B packages are different.
+- The timings of the same package name of different batches might also have different timings. This has been reported very often. So the spec has changed over time without making that apparent in the product number...
