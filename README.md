@@ -1,5 +1,5 @@
 # ESP-IDF MJD LED RGB LED component for WS2812, WS2812B and WS2813x
-This component has been developed to make it easy to work with the RGB LED packages of the manufacturer Worldsemi. The most popular product line is the Adafruit Neopixels. The component will also work for simple environments such as a few RGB LED's on a PCB.
+This component has been developed to make it easy to work with the RGB LED packages of the manufacturer Worldsemi. The most popular product line that uses these RGB LED packages is the Adafruit Neopixels. The component will also work for simple environments such as a few RGB LED's on a PCB.
 
 The component is based on the ESP-IDF V3 framework for the ESP32 hardware from Espressif.
 
@@ -34,7 +34,7 @@ Some characteristics:
 ## Example ESP-IDF project
 my_ledrgb_using_lib
 
-## Shop Products.
+## Shop Products
 - CJMCU   1 Bit WS2812 5050 RGB LED Driver Development Board
 - CJMCU   4 Bit WS2812 5050 RGB LED Driver Development Board
 - CJMCU   8 Bit WS2812 5050 RGB LED Driver Development Board
@@ -68,7 +68,7 @@ Most bigger LED boards and LED strips have sets of soldered wires, often with a 
 
 A LED board with WS2812B's has these PIN connections: VCC, GND, DATA IN. If 2 GND pads are present on the board then you only have to wire up one pad.
 
-Instructions for small LED boards (<=32 LED packages) with no wires:
+Instructions for small WS2812B LED boards with no wires:
 - Use 3 male-male Dupont wires.
 - Solder the male pin of each Dupont wire to an input pad on the LED board: VCC, GND, DATA IN.
 - The male connectors on the other side of the Dupont cable are used later to hook up the breadboard/MCU or the external power supply.
@@ -90,8 +90,8 @@ Goto the directory ../../development_boards/ for images with the GPIO PIN layout
 - Only for the package WS2813x with the new Backup Data Input pin (BIN): if the DATA IN is not working anymore then connect the BIN pin, via a +-470 Ohm resistor, to the same GPIO output pin on the MCU as the input pin DATA IN.
 
 Notes:
-- If you want to combine multiple LED strips, and address them as one long LED strip, then connect them in series. The IN/OUT pads are present on the back of each LED strip. And use the MJD component's init() func to declare the total number of LED's you actually want to use in your app.
-- If you want to send the same data signal to multiple LED strips then connect the one GPIO output pin to each LED strip's DATA IN pin. This is handy e.g. when having a cube of LED matrixes and you want to show the same pattern on each side of the cube.
+- If you want to combine multiple LED strips, and address them as one long LED strip, then connect them in series. The IN/OUT pads or wires are present on each LED strip. And use the MJD component's init() func to declare the total number of LED's you actually want to use in your app.
+- If you want to send the same data signal to multiple LED strips then connect the same GPIO output pin to each LED strip's DATA IN pin. This is handy e.g. when having a cube of LED matrixes and you want to show the same pattern on each side of the cube.
 
 # DATA PROTOCOL WS2812 WS2812B WS2813
 You do not have to understand this protocol in order to use this MJD component :)
@@ -114,25 +114,30 @@ You do not have to understand this protocol in order to use this MJD component :
     + A data latch
     + A 3-channel, programmable constant current output drive
     + 2 digital ports (serial output/input)
-- The voltage of the power supplied to the LED board, and the voltage of the output data signal coming from the MCU, must match. An ESP32 development board always uses 3.3V data signals.
 - Each WSx package consumes +-50mA (18mA / color LED) when fully *ON (white 0xFF 0xFF 0xFF at full brightness).
+- The voltage of the power supplied to the LED board, and the voltage of the output data signal coming from the MCU, must match according to the data sheets. But you will see later that is not always a requirement (luckily).
 
-# Notes for large RGB LED arrays and power supply (more than 16 RGB LED packages)
+# Notes for large RGB LED arrays and power supply (more than 20 RGB LED packages)
 ## Introduction
-Do not power large LED arrays using the 3.3V VCC pin of an ESP32 MCU because its amperage is too low (+-250mA left for the LEDs, even less when using Wifi). Some ESP32 MCU boards also have a 5V PIN but the amperage is also too low.
+Do not power large LED arrays using the 3.3V VCC pin of an ESP32 MCU because its max amperage is too low (+-300mA left for the LEDs, even less when using Wifi). Some ESP32 MCU boards also have a 5V PIN but the max amperage is also too low. It also depends on the length of the wires between the MCU and the LED board, and on the length of the wires between the LED's on the LED board.
 
-So you have to use a 5V additional power supply for a large LED array. A "DC Power Plug Jack Adapter Connector 5.5x2.1mm" is handy to connect the wires of the LED Strip to the power supply connector. Also connect a 1000uF capacitor between VCC and GND of the connector of the power supply.
+So you always have to use a 5V additional power supply for a large LED array. A "DC Power Plug Jack Adapter Connector 5.5x2.1mm" is handy to connect the wires of the LED Strip to the power supply connector. Also connect a 1000uF capacitor between VCC and GND of the connector of the power supply.
 
 Remember to also wire GND of the power supply to the pin GND of the MCU.
 
-Huge LED arrays (>250 LEDS) probably require thicker wires than standard AWG22 Dupont wires for connecting the power supply.
+Mega LED arrays (>250 LEDS) probably require thicker wires than standard AWG22 Dupont wires for connecting the power supply.
 
-Then first try using a 3.3V data signal with a 5V power supply. The products listed above all work in this configuration. This is the simplest configuration. If this scenario does not work for your product then use the other scenario "5V data signal and a 5V power supply".
+Frst try using a 3.3V data signal with a 5V power supply. The products listed in the beginning of this article all work in this configuration. This is the simplest configuration. If this scenario does not work for your product then use the other scenario "5V data signal and a 5V power supply".
 
 ## Scenario 3.3V data signal and 5V power supply
-Connect the GPIO OUTPUT PIN of the ESP32 development board to the DATA IN wire of the LED board/strip.
+Connect the VCC and GND wire of the power supply to the respective wire/pad of the LED board/strip.
+
+Connect the GPIO OUTPUT PIN of the ESP32 development board directly to the DATA IN wire of the LED board/strip.
+
 
 ## Scenario 5V data signal and 5V power supply
+Connect the VCC and GND wire of the power supply to the respective wire/pad of the LED board/strip.
+
 You have to use a logic level shifter board to shift the data signal from 3.3V to 5V (a uni-directional logic level shifter is sufficient). And you want a DIP package if you want to use it on a breadboard.
 
 @important The popular bi-directional logic level shifters with a BSS138 MOSFET do not work because they shift the signal too slow!
