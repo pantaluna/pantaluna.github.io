@@ -1,4 +1,4 @@
-Jun2018.
+June 2018.
 
 # ESP32 MJD Starter Kit Software
 ## Introduction
@@ -15,7 +15,7 @@ But I found it difficult to get started quickly, for me being a seasoned full st
 
 More specifically, I could understand all the features of the ESP-IDF framework but I had a hard time gluing everything together, and quickly develop real projects for real solutions using peripherals such as sensors and GPS boards and LED strips. For example, I wanted to start with projects controlling various sensors in a network and analyzing the data on a central server, and then move on to more complex projects.
 
-Secondly, it was difficult to find good documentation (data sheets, diagrams, photo's of the wiring) of the various peripheral devices such as meteo sensors, GPS boards, RGB LED's, etc.
+Secondly, it was difficult to find good documentation (data sheets, diagrams, photo's of the wiring) of the various peripheral devices such as meteo sensors, GPS boards, RGB LED's, etc. And how to use these devices in combination with an ESP32-based development board.
 
 So I developed over time these extra components, good documentation, and many working projects targeting a whole suite of peripherals/sensors that are typically used in IoT projects.
 
@@ -35,10 +35,20 @@ It is important to know that both frameworks are stable and usable but they are 
 After experimenting with both frameworks I decided to go with the ESP-IDF framework, more specifically V3 and higher. I always try to release libraries that are compatible with the last major release and eventually the master branch.
 
 ## What are the requirements of the ESP32 MJD Starter Kit?
-1. A working installation of the Espressif ESP-IDF V3 development framework (instructions @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
-2. A C language editor or the Eclipse IDE CDT (instructions also @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
+### Hardware
+- A decent ESP development board. I suggest to buy for starters a popular development board with a good influx of technical documentation. Examples: [Adafruit HUZZAH32](https://www.adafruit.com/product/3405), [Pycom WiPy](https://pycom.io/hardware/). A good budget board is the [Wemos D32](https://wiki.wemos.cc/products:d32:d32).
+- The peripherals that are used in the project. @tip The README of each component contains a section "Shop Products".
+ 
+### Software
+- A working installation of the Espressif ESP-IDF V3 development framework (instructions @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
+- A C language editor or the Eclipse IDE CDT (instructions also @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
 
 ## What is in the ESP32 MJD Starter Kit?
+### Development Boards /development_boards
+It contains basic information about a few ESP32 development boards that I have in the beginning:
+1. Adafruit HUZZAH32.
+2. Wemos Lolin32 Lite.
+
 ### Working Projects
 Firstly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself, which is not easy for a beginner).
 
@@ -159,7 +169,7 @@ The easiest way is to open a project directory that contains the features that y
 
 Read the instructions in the README for the hardware, wiring, and software setup.
 
-The wiring instructions of the components can be found in their respective directory + ./_doc/. The documentation typically documents the wiring for the Adafruit HUZZAH32 (a good ESP32 development board) and that can be extrapolated to other ESP32 dev boards easily, and some FAQ about the component.
+The wiring instructions of the components can be found in the component's directory under ./_doc/. The documentation typically documents the wiring for the Adafruit HUZZAH32 (a good ESP32 development board) and that info can be extrapolated to other ESP32 dev boards easily, and some FAQ about the component.
 
 Procedure:
 1. A working installation of the Espressif ESP-IDF V3 development framework (instructions @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
@@ -171,12 +181,14 @@ Procedure:
 7. Run `make flash monitor` to build and upload the example to your dev board and monitor the execution via the serial terminal.
 
 ## FAQ
-- The ESP32 Starter Kit gets you started quickly. If you need extra features that seem a good fit for the Starter Kit then please submit an issue.
-- The Kit is not designed to implement all conceivable features of any ESP32 project. If a new feature is very specific for your project then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. Please do not forget to mention that you obtained the components from this Starter Kit. 
+- The ESP32 Starter Kit gets you started quickly. If you need extra features of an existing component, or you wish to propose a new component, then please submit an issue.
+- The Kit is not designed to implement all conceivable features of any ESP32 project. If a new feature is very specific for your project then the best approach is to make your own bundle of ESP-IDF components with the functionality that you want. You can use these components as the foundation; please do not forget to mention that you obtained the components from this Starter Kit.
 - What does "MJD" stands for? It is a unique acronym and it is used in the C language to make identifiers unique. This approach ensures that you can use these new ESP-IDF components in any other C project.
- 
+- Why are all projects and components stored in one Github repository (opposed to have a Github repo for each project and each component)? I think this makes the Kit easier to use for beginners. In the future the Kit might be setup using Git submodules.
+
 ## Known Issues
 
 ## What Is Next
 - Please share your experiences using this ESP32 MJD Starter Kit with the ESP32 community.
-- The idea is to also release an Iot Platform so you can manage the devices in the field and analyze the incoming data.
+- To release an Iot Platform to the public so you can manage the devices in the field and analyze the incoming data.
+- To make a new website for the technical documentation of this Kit.
