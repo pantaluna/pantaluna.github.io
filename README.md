@@ -25,7 +25,7 @@ And I think now is a good time to give something back to the ESP32 community and
 You have 2 options to start developing for the ESP32 chip:
 
 1. Use "ESP-IDF", the extensible official Espressif IoT Development Framework of Espressif. \
-This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
+This is the official development framework for the ESP32 chip. It is targeted for C/C++ applications and it includes a port of the popular (Amazon) FreeRTOS O.S. This is the most powerful framework of the two and it contains a ton of excellent libraries so you can use all features of the ESP32 environment. It assumes you are at least an intermediate C Developer and it has a stiff learning curve.
 
 2. Use the official "Arduino Core For ESP32" framework of Espressif for the Arduino IDE. \
 This is a hardware abstraction layer for Arduino IDE so you can target the ESP32 chip. The big advantage is that you can empower your existing knowledge of the Arduino IDE. The downside is that it is not that feature-rich compared to ESP-IDF when it comes to specific ESP32 functionality. And the development pace is slower and not all features of ESP-IDF have been ported to Arduino.
@@ -45,12 +45,12 @@ After experimenting with both frameworks I decided to go with the ESP-IDF framew
 
 ## What is in the ESP32 MJD Starter Kit?
 ### Development Boards /development_boards
-It contains basic information about a few ESP32 development boards that I have in the beginning:
+Firstly it contains basic information about a few ESP32 development boards that I have used initially:
 1. Adafruit HUZZAH32.
 2. Wemos Lolin32 Lite.
 
 ### Working Projects
-Firstly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself, which is not easy for a beginner).
+Secondly the Starter Kit includes various working projects that you can run instantly (opposed to snippets that you have to glue together yourself, which is not easy for a beginner).
 
 These projects:
 - Give insights in how to actually use the official ESP-IDF framework efficiently.
@@ -62,7 +62,7 @@ Let's highlight a few projects that demonstrate how to use the core ESP-IDF fram
 - `my_gpio_basics` Demonstrates how to interact with GPIO pins of the development board.
 - `my_gpio_scanner` Demonstrates how to scan all GPIO pins and discover their I/O function.
 - `my_i2c_scanner` Demonstrates how to scan all slave devices on the I2C pins, and identify their I2C slave address. This is handy when working with new I2C slave devices.
-- `my_ledc_basics` Demonstrates how to use the standard ESP-IDF LEDC driver.
+- `my_ledc_pwm_basics` Demonstrates how to use the standard ESP-IDF LEDC driver (a LED Controller driver using PWM).
 - `my_rmt_basics` Demonstrates how to use the standard ESP-IDF RMT driver.
 - `my_spiffs_basics` Demonstrates how to use the standard ESP-IDF SPIFFS file system driver.
 - `my_sw180_tilt_sensor` Demonstrates how to interface with this tilt sensor (no extra components needed).
@@ -89,13 +89,13 @@ Let's highlight a few projects that demonstrate how to use the extra components 
 - `my_zs042_clock_using_lib` Demonstrates how to get/set data from the ZS-042 DS1302 RTC realtime clock board.
 
 ### Extra ESP-IDF Components
-Secondly, I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32.
+Thirdly I noticed that many coding patterns came back again and again in the first projects that I developed for the ESP32.
 
 So after a while I started putting those coding patterns in separate libraries. The ESP-IDF is an extensible framework so these libraries are implemented as new ESP-IDF components which can be injected easily in any ESP-IDF based project (a big plus I reckon).
 
 The components can roughly be divided in 3 groups:
 1. Related to programmming in the C language (which has its own quirks as all other programming languages). Example: linked lists.
-2. Related to the ESP32 environment and the specifics of embedded systems. Some examples: an easy Wifi component, the SPIFFS file system. They make those ESP-IDF features much easier to use.
+2. Related to the ESP32 environment and the specifics of embedded systems. Examples: an easy Wifi component. They make those ESP-IDF features much easier to use.
 3. Related to networking. Some examples: interfacing with an MQTT server and some DNS functions. The component abstracts the complexity, and makes it much easier to use.
 4. Related to the peripherals that you wire up to the ESP32 chip or ESP32 module. Some examples: RGB LED's, temperature sensors, GPS boards, RTC clocks, PIR sensors, and obstacle sensors. The component abstracts the complexity of the peripheral.
 
@@ -147,7 +147,7 @@ Let's categorize these components in more detail:
 - ZS-042 DS1302 Real Time Clock.
 
 #### ESP32 Peripherals - RGB LED's
-This component supports several RGB LED packages. It comes with the essential documentation such as data sheets, schematics, and instructions on how to wire them to your development board.
+This component supports several RGB LED packages. It comes with the essential documentation such as data sheets, schematics, and instructions on how to wire them to your development board and eventually an extra power supply.
 
 - RGB LED packages such as the WS2812, WS2812B, WS2813xs chips from the manufacturer Worldsemi http://www.world-semi.com/solution/list-4-1.html 
 - Adafruit's Neopixels that use the aforementioned packages.
@@ -165,7 +165,7 @@ These components come with the essential documentation such as data sheets, sche
 - KY-032 Infrared obstacle avoidance sensor.
 
 ## How do you use the ESP32 MJD Starter Kit?
-The easiest way is to open a project directory that contains the features that you are interested in.
+The easiest way is to open the directory of a project that contains the features that you are interested in.
 
 Read the instructions in the README for the hardware, wiring, and software setup.
 
@@ -176,9 +176,10 @@ Procedure:
 2. A C language editor or the Eclipse IDE CDT (instructions @ http://esp-idf.readthedocs.io/en/latest/get-started/index.html).
 3. Clone this Github repository. `git clone https://github.com/pantaluna/esp32-mjd-starter-kit.git`
 4. `cd` into the directory of the project you want to explore under `./projects`.
-5. Read the instructions in the README of the project, and the README of all the extra components that are used in this project. The latter contains the wiring instructions (if relevant).
-6. Run `make menuconfig` to modify the settings of the project that you want to run (e.g. GPIO PIN#, wifi credentials, ...).
-7. Run `make flash monitor` to build and upload the example to your dev board and monitor the execution via the serial terminal.
+5. Read the instructions in the README of the project.
+6. Read the instructions in the README of all the extra components that are used in this project. Remember that if relevant the wiring instructions are always documented in the component's directory ./_doc/ (not in the project directory).
+7. Run `make menuconfig` to modify the settings of the project that you want to run (e.g. GPIO PIN#, wifi credentials, ...).
+8. Run `make flash monitor` to build and upload the example to your dev board and monitor the execution via the serial terminal.
 
 ## FAQ
 - The ESP32 Starter Kit gets you started quickly. If you need extra features of an existing component, or you wish to propose a new component, then please submit an issue.
@@ -188,7 +189,10 @@ Procedure:
 
 ## Known Issues
 
-## What Is Next
-- Please share your experiences using this ESP32 MJD Starter Kit with the ESP32 community.
+## What Is Next for me
+- Release extra components for TFT Displays and RGB LED matrixes.
 - To release an Iot Platform to the public so you can manage the devices in the field and analyze the incoming data.
 - To make a new website for the technical documentation of this Kit.
+
+## What Is Next for you
+- Please share your experiences using this ESP32 MJD Starter Kit with the ESP32 community.
