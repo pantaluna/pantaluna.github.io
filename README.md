@@ -1,68 +1,49 @@
-# RobotDyn CP2104 UART USB To TTL 3.3V 5V Serial Adapter
-Bought Apr2018.
+# Geekcreit FT232RL FTDI - USB To TTL Serial Converter Adapter Module
+Bought Mar2018.
 
-https://robotdyn.com/usb-serial-adapter-microcontroller-cp2104-5v-3-3v-digital-i-o-micro-usb.html
+https://www.banggood.com/3Pcs-FT232RL-FTDI-USB-To-TTL-Serial-Converter-Adapter-Module-p-959210.html
 
-https://www.aliexpress.com/item/CP2104-USB-TTL-UART-Serial-adapter-microcontroller-5V-3-3V-Micro-USB/32808495412.html
-
-
-## Usages
-1. As an UART Logger for ESP32 dev boards (typically when it is battery-only powered so no USB line is connected to the ESP32 dev board).
-2. To hook up UART devices, such as the u-blox NEOM8N GPS Board, directly to the PC.
-
-## USB Type of the connector: Micro-USB.
-
-## Three pads for setting Voltage 3.3V/5V:
-This board uses 5V SIGNAL LEVELS by default.
-
-This board needs a soldering job before it can be used (to switch the default 5V mode to 3.3V else your MCU will blow up).
-
-0. Look at the pictures.
-1. Cut the trace between the two pads closest to the corner of the board (back of the board, label "5V").
-2. Solder connect the two pads furthest away from the corner of the board (back of the board, label "3.3V").
-    
-## PIN LAYOUT
-```
-    (front side of the board)
-    1 DTR *not used*
-    2 3V3 *not used, when the board is used in combination an ESP32 dev board*
-    3 5V  *not used*
-    4 TXD
-    5 RXD
-    6 GND
-```
-
-## ***Wiring Instructions: using the board as an UART Logger in combination with an ESP32 dev board:
-```
-- [Do not connect voltage pins!]
-- pin 4 TXD -> devboard pin UART RX
-- pin 5 RXD -> devboard pin UART TX
-- pin 6 GND -> devboard pin GND
-```
-
-## UART Chip: Silicon Labs CP2104
-[OK. This is a high-quality USB UART chip.]
-
-## Install Driver "Silicon Labs CP210x_Windows_Drivers v6.7.5 [Sep2017]"
-https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
-
-- The standard Windows Update driver version DOES NOT WORK.
-- The latest "Silicon Labs CP210x_Universal_Windows_Driver v10.1.1 [Nov2017]" DOES NOT WORK.
-- RESTART the computer after installing the driver.
-
-## MS Windows: Device Manager -> Port COMx: set baud speed = 115200
-	
-## Config Instructions:
-- The baud speed used on the UART board must be the same as the baudspeed configuration of the ESP32 MCU (typically 115200).
-- The baud speed used on the UART board must be the same as the baudspeed configured in the terminal programme (MobaXterm) (typically 115200).
-
-## FAQ
+# FAQ
 - This USB Bus Powered device gets its power from the USB bus (not from the exposed VCC pin - which is outgoing only!).
 - Working voltage: 3.3V - 5V. The board contains a voltage regulator.
-- Speeds 921600, 115200 and 9600 certainly work.
-- OK CHECKED that when the jumper is set to 3.3V then the RX TX pins are also using 3.3V (not 5V) so it is safe for an ESP32.
+- OK CHECKED that when the jumper is set to 3.3V then the RX TX pins are also set to 3.3V so it is safe for an ESP32. \
+    @important Some other UART boards still emit 5V on the TX RX pins when supplying 3.3V on the VCC output pin!
+- Speeds 921600, 115200 and 9600 certainly work. The FT232R chip supports all standard baud rates and non-standard baud rates from 300 Baud up to 3 Megabaud.
 
-## ISSUES
-- The board is by default configured for 5V. You have to resolder the pads for 3.3V (see earlier).
-- Disable the Microsoft Serial Mouse device (it often conflicts with Silicon Labs drivers for the CP2XX chips!)  \
-	    http://www.taltech.com/support/entry/windows_2000_nt_serial_mice_and_missing_com_port
+# JUMPER Voltage 3.3V/5V:
+Set jumper:=3.3V (opposed to 5V) else the ESP32 MCU will blow-up!
+
+# PIN LAYOUT
+````
+(front side of the board)
+1 GND
+2 CTS
+3 VCC
+4 TX
+5 RX
+6 DTR
+````
+
+# Wiring Instructions
+```
+- Connect GND pin to the GND pin on the MCU.
+- Connect TX pin to the RX pin on the MCU.
+- Connect RX pin to the TX pin on the MCU.
+```
+
+# DRIVER Windows 10 USB device driver:
+- Download from http://www.ftdichip.com/Drivers/VCP.htm the "FTDI VP Drivers CDM V2.12.28_Aug2017_Setup.exe"
+- RESTART the computer after installing the driver.
+
+# FIX MS Windows 10 Conflict FTDI - Serial Mouse
+```
+Windows Device Manager: Port UART: Port Settings => Advanced: Set SerialEnumeration=*OFF!
+```
+
+# Config Instructions:
+- The baud speed used on the UART board must be the same as the MCU config value for baudspeed.
+- The baud speed used on the UART board must be the same as the MobaXterm configured baudspeed.
+
+# ISSUES
+- It is a USB-MINI connector (not MICRO...).
+- The FTDI cannot be used to supply power (VCC+GND) to the ESP32 MCU because the amperage (current) is too low at 250mA. You have to use my RobotDyn Silicon Labs CP2104 UART board if you want to power an ESP32 MCU (I do not actually because I use the USB connection on the MCU to power the ESP32).
