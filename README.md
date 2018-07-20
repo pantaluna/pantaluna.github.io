@@ -1,10 +1,11 @@
 # RobotDyn CP2104 UART USB To TTL 3.3V 5V Serial Adapter
-# =====================================================
+
 Bought Apr2018.
+
+https://robotdyn.com/usb-serial-adapter-microcontroller-cp2104-5v-3-3v-digital-i-o-micro-usb.html
 
 https://www.aliexpress.com/item/CP2104-USB-TTL-UART-Serial-adapter-microcontroller-5V-3-3V-Micro-USB/32808495412.html
 
-https://robotdyn.com/usb-serial-adapter-microcontroller-cp2104-5v-3-3v-digital-i-o-micro-usb.html
 
 ## Usages
 1. As an UART Logger for ESP32 dev boards (typically when it is battery-only powered so no USB line is connected to the ESP32 dev board).
@@ -45,12 +46,12 @@ https://robotdyn.com/usb-serial-adapter-microcontroller-cp2104-5v-3-3v-digital-i
 
 https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
 
-# Install Driver "Silicon Labs CP210x_Windows_Drivers v6.7.5 [Sep2017]"
+## Install Driver "Silicon Labs CP210x_Windows_Drivers v6.7.5 [Sep2017]"
 - @important The standard Windows Update driver version DOES NOT WORK.
 - @important The latest Silicon Labs CP210x_Universal_Windows_Driver v10.1.1 [Nov2017] also DOES NOT WORK.
 - @important RESTART the computer after installing the driver
 
-# MS Windows Port COMx: Device Manager: set baud speed = 115200
+## MS Windows Port COMx: Device Manager: set baud speed = 115200
 	
 ## Config Instructions:
 - The baud speed used on the UART board must be the same as the baudspeed configuration of the ESP32 MCU (typically 115200).
